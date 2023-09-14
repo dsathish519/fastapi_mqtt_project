@@ -1,0 +1,34 @@
+version: '3'
+services:
+  mosquitto:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+
+  mqtt-publisher:
+    build: ./routes/mqtt_publisher
+    depends_on:
+      - mqtt-broker
+
+  mqtt-subscriber:
+    build: ./routes/mqtt_subscriber
+    depends_on:
+      - mqtt-broker
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  fastapi-app:
+    build: ./fastapi_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+      - redis

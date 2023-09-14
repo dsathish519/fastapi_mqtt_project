@@ -1,0 +1,29 @@
+requirements and action items
+"""
+
+setting up fastapi ,
+connecting mongodb from fastapi
+use onstart event to start mongo onstart and threading to start the mqtt_publisher and subscriber files
+depedency injection 
+setup a mqtt client to publisher data for humidity and temperature
+setup a mqtt client to subscribe to the topics and stores the data in mongodb
+create a snesor.py file that retrevie the stored data based on certain conditions
+path /sensor/{topic}
+{topic} - could be temperature or humidity
+filter the data by checking in to the specified collection
+- I used postman to test the api's 
+- input test data: {
+    "start_time": "2023-09-10T10:43:20Z",
+    "end_time": "2023-09-10T10:56:01Z"
+}
+last-ten-readings - return the data from redis for last 10 instances 
+- params : key : sensor_id - Value: sensor1/sensor2/sensor3
+           key : data_type - Value: temperature/humidity
+
+"""
+
+NOTE : run -  sudo systemctl start redis and sudo systemctl start mosquitto , in a seperate new terminal to start mosquitto broker and redis server.
+
+Challenges faced while working on this project - one of the major challenge is to start mqtt_publish, mqtt_subscribe file parallelly, inital i try setting up
+mqtt_publish and subscribe inside onstart but it was blocking the fastapi sever, then tried few other approaches but nothing worked out finially, i came across 
+import threading which worked out splendidly in the end for me without blocking other processess running.
